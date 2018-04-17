@@ -1,19 +1,12 @@
 package com.example.project.entity;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import javax.persistence.*;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
 @Table(name = "user")
@@ -60,7 +53,7 @@ public class User implements UserDetails {
         this.name = name;
     }
 
-    @Transient
+    @Transient //避免JPA去数据库中验证此字段，应为此字段不在User表中
     private List<GrantedAuthority> authorityList;
 
     public List<GrantedAuthority> getAuthorityList() {

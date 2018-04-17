@@ -1,6 +1,8 @@
 package com.example.project.config;
 
+import com.example.project.security.AuthProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -41,7 +43,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Autowired
     public void configGlobal(AuthenticationManagerBuilder builder) throws Exception {
-        builder.inMemoryAuthentication().withUser("admin").password("admin")
-                .roles("ADMIN").and();
+        builder.authenticationProvider(authProvider()).eraseCredentials(true);
+    }
+
+    @Bean
+    public AuthProvider authProvider() {
+        return new AuthProvider();
     }
 }
