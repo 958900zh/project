@@ -29,14 +29,14 @@ public class AuthProvider implements AuthenticationProvider {
             throw new AuthenticationCredentialsNotFoundException("authError");
         }
 
-        if (passwordEncoder.isPasswordValid(user.getPassword(), inputPassword, user.getId())) {
-            return new UsernamePasswordAuthenticationToken(username, null, user.getAuthorities());
+        if (this.passwordEncoder.isPasswordValid(user.getPassword(), inputPassword, user.getId())) {
+            return new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
         }
         throw new BadCredentialsException("authError");
     }
 
     @Override
     public boolean supports(Class<?> aClass) {
-        return false;
+        return true;
     }
 }

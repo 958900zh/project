@@ -1,6 +1,8 @@
 package com.example.project.config;
 
 import com.example.project.security.AuthProvider;
+import com.example.project.security.LoginAuthFailHandler;
+import com.example.project.security.LoginUrlEntryPoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -32,6 +34,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin()
                 .loginProcessingUrl("/login")
+                .failureHandler(loginAuthFailHandler())
+                .and()
+                .logout()
+                .logoutSuccessUrl("/logout/page")
+                .deleteCookies("JSESSIONID")
+                .invalidateHttpSession(true)
+                .and()
+                .exceptionHandling()
+                .authenticationEntryPoint(loginUrlEntryPoint())
+                .accessDeniedPage("/403")
                 .and();
 
         http.csrf().disable();
@@ -49,5 +61,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public AuthProvider authProvider() {
         return new AuthProvider();
+    }
+
+    @Bean
+    public LoginUrlEntryPoint loginUrlEntryPoint() {
+        return new LoginUrlEntryPoint("/user/login");
+    }
+
+    @Bean
+    public LoginAuthFailHandler loginAuthFailHandler() {
+        return new LoginAuthFailHandler(loginUrlEntryPoint());
     }
 }
