@@ -4,32 +4,20 @@ package com.example.project.common;
  * API响应格式
  */
 public class ApiResponse {
-
     private int code;
-    private String msg;
+    private String message;
     private Object data;
+    private boolean more;
 
-    public ApiResponse() {
-        this.code = Status.SUCCESS.getCode();
-        this.msg = Status.SUCCESS.getMessage();
-    }
-
-    public ApiResponse(int code, String msg, Object data) {
+    public ApiResponse(int code, String message, Object data) {
         this.code = code;
-        this.msg = msg;
+        this.message = message;
         this.data = data;
     }
 
-    public static ApiResponse ofMessage(int code, String message) {
-        return new ApiResponse(code, message, null);
-    }
-
-    public static ApiResponse ofSuccess(Object data) {
-        return new ApiResponse(Status.SUCCESS.getCode(), Status.SUCCESS.getMessage(), data);
-    }
-
-    public static ApiResponse ofStatus(Status status) {
-        return new ApiResponse(status.getCode(), status.getMessage(), null);
+    public ApiResponse() {
+        this.code = Status.SUCCESS.getCode();
+        this.message = Status.SUCCESS.getStandardMessage();
     }
 
     public int getCode() {
@@ -40,12 +28,12 @@ public class ApiResponse {
         this.code = code;
     }
 
-    public String getMsg() {
-        return msg;
+    public static ApiResponse ofMessage(int code, String message) {
+        return new ApiResponse(code, message, null);
     }
 
-    public void setMsg(String msg) {
-        this.msg = msg;
+    public static ApiResponse ofSuccess(Object data) {
+        return new ApiResponse(Status.SUCCESS.getCode(), Status.SUCCESS.getStandardMessage(), data);
     }
 
     public Object getData() {
@@ -56,20 +44,41 @@ public class ApiResponse {
         this.data = data;
     }
 
+    public static ApiResponse ofStatus(Status status) {
+        return new ApiResponse(status.getCode(), status.getStandardMessage(), null);
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public boolean isMore() {
+        return more;
+    }
+
+    public void setMore(boolean more) {
+        this.more = more;
+    }
+
     public enum Status {
         SUCCESS(200, "OK"),
         BAD_REQUEST(400, "Bad Request"),
+        NOT_FOUND(404, "Not Found"),
         INTERNAL_SERVER_ERROR(500, "Unknown Internal Error"),
         NOT_VALID_PARAM(40005, "Not valid Params"),
         NOT_SUPPORTED_OPERATION(40006, "Operation not supported"),
         NOT_LOGIN(50000, "Not Login");
 
         private int code;
-        private String message;
+        private String standardMessage;
 
-        Status(int code, String message) {
+        Status(int code, String standardMessage) {
             this.code = code;
-            this.message = message;
+            this.standardMessage = standardMessage;
         }
 
         public int getCode() {
@@ -80,13 +89,12 @@ public class ApiResponse {
             this.code = code;
         }
 
-        public String getMessage() {
-            return message;
+        public String getStandardMessage() {
+            return standardMessage;
         }
 
-        public void setMessage(String message) {
-            this.message = message;
+        public void setStandardMessage(String standardMessage) {
+            this.standardMessage = standardMessage;
         }
     }
-
 }

@@ -1,13 +1,43 @@
 package com.example.project.service.house;
 
+import com.example.project.dto.SubwayDTO;
+import com.example.project.dto.SubwayStationDTO;
+import com.example.project.dto.SupportAddressDTO;
+import com.example.project.entity.Subway;
+import com.example.project.entity.SubwayStation;
+import com.example.project.entity.SupportAddress;
+import com.example.project.repository.SubwayRepository;
+import com.example.project.repository.SubwayStationRepository;
+import com.example.project.repository.SupportAddressRepository;
+import com.example.project.service.BaiduMapLocation;
 import com.example.project.service.IAddressService;
+import com.example.project.service.ServiceMultiResult;
 import com.example.project.service.ServiceResult;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class AddressServiceImpl implements IAddressService {
