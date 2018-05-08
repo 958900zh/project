@@ -1,10 +1,12 @@
 package com.example.project.service.user;
 
+import com.example.project.dto.UserDTO;
 import com.example.project.entity.Role;
 import com.example.project.entity.User;
 import com.example.project.repository.RoleRepository;
 import com.example.project.repository.UserRepository;
 import com.example.project.service.IUserService;
+import com.example.project.service.ServiceResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.GrantedAuthority;
@@ -38,5 +40,10 @@ public class UserServiceImpl implements IUserService {
         roles.forEach(role -> authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getName())));
         user.setAuthorityList(authorities);
         return user;
+    }
+
+    @Override
+    public ServiceResult<UserDTO> findById(Long userId) {
+        return null;
     }
 }

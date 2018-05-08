@@ -9,10 +9,10 @@ import com.example.project.entity.SupportAddress;
 import com.example.project.repository.SubwayRepository;
 import com.example.project.repository.SubwayStationRepository;
 import com.example.project.repository.SupportAddressRepository;
-import com.example.project.service.BaiduMapLocation;
 import com.example.project.service.IAddressService;
 import com.example.project.service.ServiceMultiResult;
 import com.example.project.service.ServiceResult;
+import com.example.project.service.search.BaiduMapLocation;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.HttpResponse;
@@ -57,10 +57,14 @@ public class AddressServiceImpl implements IAddressService {
     private SubwayRepository subwayRepository;
     @Autowired
     private SubwayStationRepository subwayStationRepository;
-    @Autowired
+
     private ModelMapper modelMapper;
     @Autowired
     private ObjectMapper objectMapper;
+
+    public AddressServiceImpl() {
+        this.modelMapper = new ModelMapper();
+    }
 
     @Override
     public ServiceMultiResult<SupportAddressDTO> findAllCities() {
